@@ -1,0 +1,17 @@
+__pycache__/
+corutine.py
+intCsv.csv
+doubleCsv.csv
+testInclude.py
+testInclude2.py
+test_OthorFileMainCall.py
+Pollution_Creater4D.py
+pollutionOrigin,py
+.~lock.intCsv.csv#
+.~lock.doubleCsv.csv#
+Pollutions/
+DataLog/
+testFor.py
+learning/
+Pollution_Check.py
+test_include_package.py
