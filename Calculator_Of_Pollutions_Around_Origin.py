@@ -4,6 +4,7 @@ import copy
 import common
 import numpy as np
 import importlib
+import math
 import Pollution_Origin
 from Pollution_Origin import PollutionOrigin
 
@@ -31,7 +32,7 @@ class CalculatorOfPollutionsAroundOrigin:
 
         for x in range(xlim_m):
             for y in range(ylim_m):
-                distanceFromOrigin_m = common.CalculateAbsoluteDistance(originX, originY, x, y)
+                distanceFromOrigin_m = self.__CalculateAbsoluteDistance(originX, originY, x, y)
 
                 t_ref = time_sec - distanceFromOrigin_m / flowSpeed_ms #何秒前の汚染源中心の濃度を参考にするか
                 #汚染源の濃度履歴を参照し、現在位置の濃度を計算
@@ -47,3 +48,10 @@ class CalculatorOfPollutionsAroundOrigin:
                     pollutionsDist[x][y] = 0
 
         return pollutionsDist
+
+
+    def __CalculateAbsoluteDistance(self, xBegin, yBegin, xEnd, yEnd):
+
+        diff = math.sqrt((xEnd - xBegin) * (xEnd - xBegin) + (yEnd- yBegin) * (yEnd - yBegin))
+
+        return  diff
