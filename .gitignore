@@ -1,4 +1,5 @@
 __pycache__/
+Pic_Pollution/
 corutine.py
 intCsv.csv
 doubleCsv.csv
@@ -15,3 +16,5 @@ testFor.py
 learning/
 Pollution_Check.py
 test_include_package.py
+
+Pic_Pollution/thesis/cycle/
