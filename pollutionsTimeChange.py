@@ -133,14 +133,16 @@ def main():
             confusedPollutions += pollutionsDist
 
         #500秒ごとに濃度分布を表示
-        if(t_i == 1000 or t_i == 1500 or t_i == 2000 or t_i == 2500 or t_i == 3000):
+        if(t_i == 1000 or t_i == 1500 or t_i == 2000 or t_i == 2500 or t_i == 3000 or t_i == 3500 or t_i == 3999):
             fig = plt.figure()
             ax = fig.add_subplot(111)
+            ax.set_xlabel("x [m]")
+            ax.set_ylabel("y [m]")
             aspectObj = AdjustAspectEqu("equal", ax)
             drawer2D = class_pollution_state_drawer_2D.PollutionScatterDrawer2D(ax)
             drawer2D.ApplyAppearanceFuncs(aspectObj)
             drawer2D.draw_pollution_map(fieldX, fieldY, confusedPollutions, cmap_ = "binary")
-            file = "Pic_Pollution/thesis/cycle/" + str(t_i) + ".png"
+            file = "Pic_Pollution/thesis/cycle/" + str(t_i - 1000) + ".png"
             fig.savefig(file)
 
         #1ごとにデータ保存
