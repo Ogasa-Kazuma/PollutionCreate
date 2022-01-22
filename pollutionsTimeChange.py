@@ -65,6 +65,7 @@ importlib.reload(Daily_Name_Directory_Maker)
 
 
 def ConvertPollutionsToSave(xlim, ylim, pollutions):
+    """濃度データを保存できる形式に変換"""
     new_x = []
     new_y = []
     new_pollutions = []
@@ -86,6 +87,7 @@ def main():
     dailyNameDirMaker = Daily_Name_Directory_Maker.DailyNameDirectoryMaker(dirMaker)
     saveDir = dailyNameDirMaker.MkDir("DataLog")
 
+    #探索モデルのパラメータ
     fieldX = 100
     fieldY = 100
     searchingFirstTime = 1000
@@ -93,7 +95,7 @@ def main():
 
     pollutions = np.zeros((fieldX, fieldY))
 
-    #濃度の時間変化を生成するオブジェクト
+
 
 
 #############汚染源を作成####################
@@ -103,14 +105,8 @@ def main():
 
     origin1 = originCreater.Create(dict(x = 0, y = 80, startHistory = 100,\
                         t_max = 4000, maxCycleTime = 20, changePerSec = 1))
-#    origin1 = originCreater.Create(dict(x = 0, y = 80, startHistory = 30,\
-#t_max = 4000, maxCycleTime = 10, changePerSec = 0.5))
     origin2 = originCreater.Create(dict(x = 0, y = 10, startHistory = 100,\
                         t_max = 4000, maxCycleTime = 20, changePerSec = 1))
-#origin2 = originCreater.Create(dict(x = 0, y = 10, startHistory = 30,\
-#t_max = 4000, maxCycleTime = 10, changePerSec = 0.5))
-
-
     origins.append(origin1)
     origins.append(origin2)
 ##################################################
@@ -118,17 +114,10 @@ def main():
 
 
 
+ ########################## 時間変化に応じた濃度分布を計算 #####################################
 
-
-
-
-
-
-
-
- ########################## 数秒ごとの濃度分布を計算 #####################################
-    decreasingRatio = 1
-    flowSpeed_ms = 1
+    decreasingRatio = 1 #汚染源中心からの距離と濃度の減少比
+    flowSpeed_ms = 1 #流れの速度
 
 
 
@@ -143,40 +132,21 @@ def main():
             #複数の汚染源を足し合わせる
             confusedPollutions += pollutionsDist
 
-
-        if(t_i == 1000 or t_i == 1500 or t_i == 2000 or t_i == 2500 or t_i == 3000):
+        #500秒ごとに濃度分布を表示
+        if(t_i == 1000 or t_i == 1500 or t_i == 2000 or t_i == 2500 or t_i == 3000 or t_i == 3500 or t_i == 3999):
             fig = plt.figure()
             ax = fig.add_subplot(111)
+            ax.set_xlabel("x [m]")
+            ax.set_ylabel("y [m]")
             aspectObj = AdjustAspectEqu("equal", ax)
             drawer2D = class_pollution_state_drawer_2D.PollutionScatterDrawer2D(ax)
             drawer2D.ApplyAppearanceFuncs(aspectObj)
             drawer2D.draw_pollution_map(fieldX, fieldY, confusedPollutions, cmap_ = "binary")
-            file = "Pic_Pollution/thesis/cycle/" + str(t_i) + ".png"
+            fileNameEnd = str(input())
+            file = "Pic_Pollution/thesis/cycle/" + str(t_i - 1000) + "_" + fileNameEnd + ".png"
             fig.savefig(file)
 
-
-            # new_x = []
-            # new_y = []
-            # new_pollutions = []
-            #
-            # xlim, ylim = confusedPollutions.shape
-            # for i in range(xlim):
-            #     for j in range(ylim):
-            #         new_x.append(i)
-            #         new_y.append(j)
-            #         new_pollutions.append(confusedPollutions[i][j])
-            #
-            # maxValue = max(new_pollutions)
-            # for i in range(len(new_pollutions)):
-            #     new_pollutions[i] = new_pollutions[i] / maxValue
-            #
-            # fig = plt.figure()
-            # ax = fig.add_subplot(111)
-            # ax.set_aspect('equal')
-            # plt.scatter(new_x, new_y, alpha = new_pollutions, c = "black")
-            # plt.show()
-
-
+        #1ごとにデータ保存
         dataRecorder = Data_Recorder.DataRecorder("..")
         indexes = ["pollutions", "x", "y", "start_t", "end_t"]
         pollutionsToSave = ConvertPollutionsToSave(xlim = fieldX, ylim = fieldY, pollutions = confusedPollutions)
@@ -186,39 +156,6 @@ def main():
         fileName = str(t_i - searchingFirstTime)
         dataRecorder.SaveAsPickle(saveDir + fileName)
         dataRecorder.DropAll()
-
-
-    # for t in range(timeRange[0], timeRange[1]):
-    #
-    #     new_x = []
-    #     new_y = []
-    #     new_t = []
-    #     new_pollutions = []
-    #
-    #     xlim, ylim, _ = confusedPollutions.shape
-    #     for i in range(xlim):
-    #         for j in range(ylim):
-    #             new_x.append(i)
-    #             new_y.append(j)
-    #             new_pollutions.append(confusedPollutions[i][j][t])
-    #
-    #
-    #     maxValue = max(new_pollutions)
-    #     for i in range(len(new_pollutions)):
-    #         new_pollutions[i] = new_pollutions[i] / maxValue
-    #
-    #     fig = plt.figure()
-    #     ax = fig.add_subplot(111)
-    #     ax.set_aspect('equal')
-    #     plt.scatter(new_x, new_y, alpha = new_pollutions, c = "black")
-    #     plt.show()
-    #
-
-
-
-
-    #dataRecorder.SaveAsCsv("../../../../media/kazuma/KIOXIA SSD1/test100")
-
 
 ################################################################################
 
