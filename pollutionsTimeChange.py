@@ -142,7 +142,8 @@ def main():
             drawer2D = class_pollution_state_drawer_2D.PollutionScatterDrawer2D(ax)
             drawer2D.ApplyAppearanceFuncs(aspectObj)
             drawer2D.draw_pollution_map(fieldX, fieldY, confusedPollutions, cmap_ = "binary")
-            file = "Pic_Pollution/thesis/cycle/" + str(t_i - 1000) + ".png"
+            fileNameEnd = str(input())
+            file = "Pic_Pollution/thesis/cycle/" + str(t_i - 1000) + "_" + fileNameEnd + ".png"
             fig.savefig(file)
 
         #1ごとにデータ保存
