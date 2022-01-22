@@ -1,7 +1,7 @@
 
 
 import copy
-import common
+
 import numpy as np
 import importlib
 import math
@@ -10,7 +10,6 @@ from Pollution_Origin import PollutionOrigin
 
 
 
-importlib.reload(common)
 importlib.reload(Pollution_Origin)
 
 class CalculatorOfPollutionsAroundOrigin:
